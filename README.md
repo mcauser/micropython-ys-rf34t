@@ -2,6 +2,8 @@
 
 MicroPython examples using YS-RF34T 433MHz ASK/OOK UART transceivers.
 
+![demo](docs/demo.jpg)
+
 This module consists of an unlabelled MCU that provides a UART interface to two daughter ASK/OOK modules.
 
 A 433MHz receiver (YS-RF470) and a 433MHz transmitter (H34C).
