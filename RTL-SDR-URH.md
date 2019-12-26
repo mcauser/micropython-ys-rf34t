@@ -69,13 +69,13 @@ This is the signal we're looking for when we capture with the RTL-SDR.
 
 Open URH, File > Spectrum Analyser. Select RTL-SDR and set sample rate to 1MB.
 
-![rx-1](docs/sdr/rx-1-spectrum-analyser.png)
+![rx-1](docs/urh/rx-1-spectrum-analyser.png)
 
 Press button A on the remote and click on the peak of the signal. Should be near 433.920MHz.
 
 In this case, it's 433.806MHz.
 
-![rx-2](docs/sdr/rx-2-spectrum-analyser.png)
+![rx-2](docs/urh/rx-2-spectrum-analyser.png)
 
 ## Record Signal
 
@@ -83,7 +83,7 @@ Close. Open File > Record Signal. The 433.806MHz should be carried across, if no
 
 Click Start and wait until it's capturing, then press button A on the remote. You should see some blocks appear.
 
-![rx-3](docs/sdr/rx-3-record-signal.png)
+![rx-3](docs/urh/rx-3-record-signal.png)
 
 Press Stop and Save. Close the window and the capture will be opened for interpretation.
 
@@ -91,7 +91,7 @@ Press Stop and Save. Close the window and the capture will be opened for interpr
 
 In most cases, autodetect parameters works. If not, tweak the noise, center and bit length until you see some consistent captures below.
 
-![rx-4](docs/sdr/rx-4-interpret-signal.png)
+![rx-4](docs/urh/rx-4-interpret-signal.png)
 
 About half way through the capture, something in my neighbourhood was emitting on the 433 band. There is a small spike in the red band in the centre.
 
@@ -103,7 +103,7 @@ Varies with distance, orientation, battery etc.
 
 The total packet is around 30ms and repeats several times.
 
-![rx-5](docs/sdr/rx-5-interpret-signal.png)
+![rx-5](docs/urh/rx-5-interpret-signal.png)
 
 The data is encoded into sets of 4 bits, where a present carrier signal represents a 1 and absense of carrier a 0.
 
@@ -160,7 +160,7 @@ We can't control the frequency the onboard ASK/OOK module transmits at, but it s
 
 Open URH and the Spectrum Analyser again.
 
-![remote](docs/sdr/tx-1-spectrum-analyser.png)
+![remote](docs/urh/tx-1-spectrum-analyser.png)
 
 ```python
 from machine import Pin, UART
@@ -182,7 +182,7 @@ uart.write(bytearray(b'\xfd\x03\x84\x19\x04\x60\xdf'))
 
 Press Stop, Save and Close.
 
-![remote](docs/sdr/tx-2-record-signal.png)
+![remote](docs/urh/tx-2-record-signal.png)
 
 ## Interpret Signal
 
@@ -190,7 +190,7 @@ Raise the noise floor to get a clean capture. Bit length here is 400. Wider than
 
 The total signal time is 43ms, where the remote was sending closer to 30ms.
 
-![remote](docs/sdr/tx-3-interpret-signal.png)
+![remote](docs/urh/tx-3-interpret-signal.png)
 
 Looks like we need to reduce that byte 5 `b'\x60'` to something smaller. Try `0x44`.
 
@@ -198,7 +198,7 @@ Looks like we need to reduce that byte 5 `b'\x60'` to something smaller. Try `0x
 uart.write(bytearray(b'\xfd\x03\x84\x19\x04\x44\xdf'))
 ```
 
-![remote](docs/sdr/tx-4-interpret-signal.png)
+![remote](docs/urh/tx-4-interpret-signal.png)
 
 Nope `0x44` is still too big. Signal width is 32.39ms. Try `0x38`.
 
@@ -206,7 +206,7 @@ Nope `0x44` is still too big. Signal width is 32.39ms. Try `0x38`.
 uart.write(bytearray(b'\xfd\x03\x84\x19\x04\x38\xdf'))
 ```
 
-![remote](docs/sdr/tx-5-interpret-signal.png)
+![remote](docs/urh/tx-5-interpret-signal.png)
 
 Nope `0x38` is still too small. Signal width is 27.54ms. Try `0x40`.
 
@@ -214,7 +214,7 @@ Nope `0x38` is still too small. Signal width is 27.54ms. Try `0x40`.
 uart.write(bytearray(b'\xfd\x03\x84\x19\x04\x40\xdf'))
 ```
 
-![remote](docs/sdr/tx-6-interpret-signal.png)
+![remote](docs/urh/tx-6-interpret-signal.png)
 
 Looks good! Signal width is 30.74ms.
 
